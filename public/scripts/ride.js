@@ -1,10 +1,10 @@
+const { createClass, PropTypes } = React;
+
 let rideRecords = [ 
     { id: 1, riderName:'Nick', routeName:'Long Westerville', distanceInMiles:22, timeToCompleteInHours:1.5},
     {id: 2,  riderName:'Nick', routeName:'Long New Albany', distanceInMiles:22, timeToCompleteInHours:1.25}
 ];
 
-
-//without the props.children the properties aren't passed on to the inner elements
 const RideRecord = (props) => (
 	<div className="rideRecord">
 	<h2 className="riderName">
@@ -13,6 +13,13 @@ const RideRecord = (props) => (
 	{props.children}
     </div>
 );
+
+RideRecord.propTypes = {
+	riderName: PropTypes.string.isRequired,
+	routeName: PropTypes.string.isRequired,
+	distanceInMiles: PropTypes.number.isRequired,
+	timeToCompleteInHours: PropTypes.number.isRequired
+}
 
 const RideRecordList = (props) => (
 	<div className="rideRecordList">
@@ -23,6 +30,15 @@ const RideRecordList = (props) => (
     )) }
     </div>
 );
+
+RideRecordList.propTypes = {
+    rideRecords: PropTypes.arrayOf(PropTypes.shape({
+	riderName: PropTypes.string.isRequired,
+	routeName: PropTypes.string.isRequired,
+	distanceInMiles: PropTypes.number.isRequired,
+	timeToCompleteInHours: PropTypes.number.isRequired
+    }).isRequired).isRequired
+}
 
 const RideRecordForm = (props) => ( 
 	<form className="rideRecordForm" 
@@ -71,9 +87,6 @@ const RideRecordForm = (props) => (
 	<button>Create</button>
 	</form>
 );
-
-
-const { createClass, PropTypes } = React;
 
 const RideRecordBox = createClass({
     contextTypes: { 
@@ -182,12 +195,12 @@ const rideRecordsReducer = (state={
     case DISTANCE_IN_MILES_CHANGE:
 	return {
 		...state,
-	    distanceInMiles: action.distanceInMiles
+	    distanceInMiles: parseFloat(action.distanceInMiles)
 	};
     case TIME_TO_COMPLETE_IN_HOURS_CHANGE:
 	return {
 		...state,
-	    timeToCompleteInHours: action.timeToCompleteInHours
+	    timeToCompleteInHours: parseFloat(action.timeToCompleteInHours)
 	};
 
     default:
